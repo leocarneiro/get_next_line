@@ -12,45 +12,54 @@
 
 #include "get_next_line_bonus.h"
 
-char	*ft_strnew(int len)
+static	char	*ft_strdup(const char *s)
 {
-	char	*new;
+	char	*dup;
+	int		len;
+	int		j;
 
-	new = (char *)malloc((len + 1) * sizeof(char));
-	if (!new)
+	len = 0;
+	while (s[len])
+		len++;
+	dup = (char *)malloc((len + 1) * sizeof(char));
+	if (!dup)
 		return (NULL);
-	while (len >= 0)
+	i = 0;
+	while (s[i])
 	{
-		*new = '\0';
-		len--;
-		new++;
+		dup[i] = s[i];
+		i++;
 	}
-	return (new);
+	dup[i] = '\0';
+	return (dup);
 }
 
-void	ft_clear(char *str)
+static	void	ft_clear(char **str)
 {
-	free(str);
-	str = ft_strnew(1);
+	if (str != NULL)
+	{
+		free(*str);
+		*str = NULL;
+	}
 }
 
-int		get_erro(int fd, int ret, char **str, char **line)
+static	int		get_erro(int fd, int ret, char **str, char **line)
 {
 	int		erro;
 
 	erro = 1;
-	if (fd < 0 || ret < 0 || line == NULL || BUFFER_SIZE < 1 || \
-		(read(fd, NULL, 0) < 0))
+	if (fd < 0 || ret < 0 || line == NULL || BUFFER_SIZE < 1 ||
+			(read(fd, NULL, 0) < 0))
 		erro = -1;
 	else if (ret == 0 && str[fd] == NULL)
 	{
-		*line = ft_strnew(1);
+		*line = ft_calloc(1, 1);
 		erro = 0;
 	}
 	return (erro);
 }
 
-int		get_line(int fd, int ret, char **str, char **line)
+static	int		get_line(int fd, int ret, char **str, char **line)
 {
 	char	*aux;
 	int		i;
@@ -59,34 +68,35 @@ int		get_line(int fd, int ret, char **str, char **line)
 	if ((erro = get_erro(fd, ret, str, line)) < 1)
 		return (erro);
 	i = 0;
-	while (str[fd][i] != '\n' && str[fd][i])
+	while (str[fd][i] != '\n' && str[fd][i] != '\0')
 		i++;
 	if (str[fd][i] == '\n')
 	{
 		*line = ft_substr(str[fd], 0, i);
 		aux = ft_strdup(&str[fd][i + 1]);
-		ft_clear(str[fd]);
+		free(str[fd]);
 		str[fd] = ft_strdup(aux);
 		if (str[fd][0] == '\0')
-			ft_clear(str[fd]);
+			ft_clear(&str[fd]);
 	}
 	else
 	{
 		*line = ft_strdup(str[fd]);
-		ft_clear(str[fd]);
+		ft_clear(&str[fd]);
 		return (0);
 	}
 	return (1);
 }
 
-int		get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **line)
 {
 	int				ret;
 	char			*buffer;
 	char			*tmp;
 	static char		*str[OPEN_MAX];
 
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(*buffer));
+	if (!(buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(*buffer))))
+		return (-1);
 	while ((ret = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		buffer[ret] = '\0';
@@ -95,12 +105,12 @@ int		get_next_line(int fd, char **line)
 		else
 		{
 			tmp = ft_strjoin(str[fd], buffer);
-			ft_clear(str[fd]);
-			str[fd] = tmp;
+			free(str[fd]);
+			str[fd] = ft_strdup(tmp);
 		}
 		if (ft_strchr(str[fd], '\n'))
 			break ;
 	}
-	ft_clear(buffer);
+	ft_clear(&buffer);
 	return (get_line(fd, ret, str, line));
 }

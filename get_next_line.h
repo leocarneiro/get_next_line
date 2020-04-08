@@ -17,11 +17,10 @@
 # include <limits.h>
 
 int			get_next_line(int fd, char **line);
-char		*ft_strnew(int len);
 size_t		ft_strlen(const char *str);
 char		*ft_strjoin(char const *str1, char const *str2);
-char		*ft_strdup(const char *str);
 char		*ft_strchr(const char *str, int c);
+void		*ft_calloc(size_t count, size_t size);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 #endif
 
