@@ -21,7 +21,7 @@ static	char	*ft_strdup(const char *s)
 	len = 0;
 	while (s[len])
 		len++;
-	dup = (char *)malloc((len + 1) * sizeof(char));
+	dup = (char *)malloc(sizeof(*dup) * len + 1);
 	if (!dup)
 		return (NULL);
 	i = 0;
@@ -76,6 +76,7 @@ static	int		get_line(int fd, int ret, char **str, char **line)
 		aux = ft_strdup(&str[fd][i + 1]);
 		free(str[fd]);
 		str[fd] = ft_strdup(aux);
+		free(aux);
 		if (str[fd][0] == '\0')
 			ft_clear(&str[fd]);
 	}
@@ -95,7 +96,7 @@ int				get_next_line(int fd, char **line)
 	char			*tmp;
 	static char		*str[OPEN_MAX];
 
-	if (!(buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(*buffer))))
+	if (!(buffer = (char *)malloc((sizeof(*buffer) * BUFFER_SIZE + 1))))
 		return (-1);
 	while ((ret = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
@@ -107,6 +108,7 @@ int				get_next_line(int fd, char **line)
 			tmp = ft_strjoin(str[fd], buffer);
 			free(str[fd]);
 			str[fd] = ft_strdup(tmp);
+			free(tmp);
 		}
 		if (ft_strchr(str[fd], '\n'))
 			break ;

@@ -32,7 +32,7 @@ char	*ft_strjoin(char const *str1, char const *str2)
 	if (str1 == NULL || str2 == NULL)
 		return (NULL);
 	len = ft_strlen((char *)str1) + ft_strlen((char *)str2);
-	if (!(join = (char *)malloc((len + 1) * sizeof(char))))
+	if (!(join = malloc((sizeof(*join) * len + 1))))
 		return (NULL);
 	i = 0;
 	while (str1[i])
@@ -88,7 +88,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	if (s == NULL)
 		return (NULL);
-	if (!(sub = (char *)malloc((len + 1) * sizeof(char))))
+	if (!(sub = malloc(sizeof(*sub) * len + 1)))
 		return (NULL);
 	i = 0;
 	while (i < start && s[i])
