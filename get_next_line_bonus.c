@@ -6,7 +6,7 @@
 /*   By: lramos-r <lramos-r@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/06 11:22:39 by lramos-r          #+#    #+#             */
-/*   Updated: 2020/04/06 11:23:08 by lramos-r         ###   ########.fr       */
+/*   Updated: 2020/04/08 12:22:31 by lramos-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static	char	*ft_strdup(const char *s)
 {
 	char	*dup;
 	int		len;
-	int		j;
+	int		i;
 
 	len = 0;
 	while (s[len])
