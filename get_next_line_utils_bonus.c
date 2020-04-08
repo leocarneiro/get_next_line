@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lramos-r <lramos-r@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *str)
 {
@@ -81,9 +81,9 @@ char	*ft_strchr(const char *str, int c)
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char				*sub;
-	unsigned int		i;
-	unsigned int		j;
+	char			*sub;
+	unsigned int	i;
+	unsigned int	j;
 
 	if (s == NULL)
 		return (NULL);

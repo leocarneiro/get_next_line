@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lramos-r <lramos-r@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strnew(int len)
 {
@@ -19,7 +19,7 @@ char	*ft_strnew(int len)
 	new = (char *)malloc((len + 1) * sizeof(char));
 	if (!new)
 		return (NULL);
-	while (len > 0)
+	while (len >= 0)
 	{
 		*new = '\0';
 		len--;
@@ -30,11 +30,8 @@ char	*ft_strnew(int len)
 
 void	ft_clear(char *str)
 {
-	if (str != NULL)
-	{
-		free(str);
-		str = NULL;
-	}
+	free(str);
+	str = ft_strnew(1);
 }
 
 int		get_erro(int fd, int ret, char **str, char **line)
@@ -62,14 +59,14 @@ int		get_line(int fd, int ret, char **str, char **line)
 	if ((erro = get_erro(fd, ret, str, line)) < 1)
 		return (erro);
 	i = 0;
-	while (str[fd][i] != '\n' && str[fd][i] != '\0')
+	while (str[fd][i] != '\n' && str[fd][i])
 		i++;
 	if (str[fd][i] == '\n')
 	{
 		*line = ft_substr(str[fd], 0, i);
 		aux = ft_strdup(&str[fd][i + 1]);
-		free(str[fd]);
-		str[fd] = aux;
+		ft_clear(str[fd]);
+		str[fd] = ft_strdup(aux);
 		if (str[fd][0] == '\0')
 			ft_clear(str[fd]);
 	}
@@ -98,7 +95,7 @@ int		get_next_line(int fd, char **line)
 		else
 		{
 			tmp = ft_strjoin(str[fd], buffer);
-			free(str[fd]);
+			ft_clear(str[fd]);
 			str[fd] = tmp;
 		}
 		if (ft_strchr(str[fd], '\n'))
