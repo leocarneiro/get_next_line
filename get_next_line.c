@@ -77,8 +77,6 @@ static	int		get_line(int fd, int ret, char **str, char **line)
 		free(str[fd]);
 		str[fd] = ft_strdup(aux);
 		free(aux);
-		if (str[fd][0] == '\0')
-			ft_clear(&str[fd]);
 	}
 	else
 	{
